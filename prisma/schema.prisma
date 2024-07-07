@@ -15,7 +15,7 @@ model Preference {
 
 model Storage {
     id       Int              @id @default(autoincrement())
-    name     String
+    name     String           @unique
     type     String
     contents InventoryEntry[]
     rules    StorageRule[]
