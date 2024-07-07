@@ -3,7 +3,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 const storageRouter = createTRPCRouter({
     list: publicProcedure.query(({ ctx }) => {
-        return ctx.db.storage.findMany({ orderBy: [{ name: 'asc' }] })
+        return ctx.db.storage.findMany({ orderBy: [{ type: 'asc' }, { name: 'asc' }] })
     }),
 
     getById: publicProcedure.input(z.number()).query(({ ctx, input }) => {
