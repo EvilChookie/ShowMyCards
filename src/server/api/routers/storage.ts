@@ -1,6 +1,6 @@
-import { StorageSchema } from '@/server/schema'
 import { z } from 'zod'
 import { createTRPCRouter, publicProcedure } from '../trpc'
+import { createableStorageObject, editableStorageObject } from '@/server/schema/storage'
 
 const storageRouter = createTRPCRouter({
   list: publicProcedure.query(({ ctx }) => {
@@ -11,11 +11,11 @@ const storageRouter = createTRPCRouter({
     return ctx.db.storage.findFirst({ where: { id: input } })
   }),
 
-  create: publicProcedure.input(StorageSchema).mutation((opts) => {
+  create: publicProcedure.input(createableStorageObject).mutation((opts) => {
     return opts.ctx.db.storage.create({ data: { name: opts.input.name, type: opts.input.type } })
   }),
 
-  update: publicProcedure.input(StorageSchema).mutation((opts) => {
+  update: publicProcedure.input(editableStorageObject).mutation((opts) => {
     return opts.ctx.db.storage.update({
       where: { id: opts.input.id },
       data: { name: opts.input.name, type: opts.input.type },
