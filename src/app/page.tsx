@@ -1,5 +1,4 @@
-import Banner from "@/app/_components/layout/banner";
-import { Prose } from "@/app/_components/layout/prose";
+import Prose from "@/app/_components/layout/prose";
 
 export default async function Home() {
   return (
