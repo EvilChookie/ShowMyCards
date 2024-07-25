@@ -2,9 +2,10 @@
 
 import Prose from '@/app/_components/layout/prose'
 import Lozenge from '@/app/_components/layout/lozenge'
+import Loading from './loading'
 
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { Suspense, useState } from 'react'
 import { RouterInputs, trpc } from '@/utils/trpc'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -39,7 +40,7 @@ export default function Page() {
 }
 
 function LocationTable() {
-  const locations = trpc.storage.list.useQuery()
+  const [locations, query] = trpc.storage.list.useSuspenseQuery()
   return (
     <>
       <Table>
@@ -51,18 +52,20 @@ function LocationTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {locations.data?.map((location: UpdateStorageType) => (
-            <TableRow key={location.id}>
-              <TableCell className="font-medium">{location.name}</TableCell>
-              <TableCell className="w-1">
-                <Lozenge color={location.type == 'binder' ? 'sky' : 'yellow'} text={location.type} />
-              </TableCell>
-              <TableCell className="w-1 space-x-2">
-                <EditControl location={location} />
-                <DeleteControl location={location.id} />
-              </TableCell>
-            </TableRow>
-          ))}
+          <Suspense fallback={<Loading />}>
+            {...locations.map((location: UpdateStorageType) => (
+              <TableRow key={location.id}>
+                <TableCell className="font-medium">{location.name}</TableCell>
+                <TableCell className="w-1">
+                  <Lozenge color={location.type == 'binder' ? 'sky' : 'yellow'} text={location.type} />
+                </TableCell>
+                <TableCell className="w-1 space-x-2">
+                  <EditControl location={location} />
+                  <DeleteControl location={location.id} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </Suspense>
         </TableBody>
       </Table>
     </>
