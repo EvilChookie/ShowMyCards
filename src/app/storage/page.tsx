@@ -19,6 +19,7 @@ import { Alert, AlertActions, AlertDescription, AlertTitle } from '@/app/_compon
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/app/_components/catalyst/table'
 import { Dialog, DialogActions, DialogBody, DialogDescription, DialogTitle } from '@/app/_components/catalyst/dialog'
 import { createableStorageObject, editableStorageObject } from '@/server/schema/storage'
+import Banner from '../_components/layout/banner'
 
 type UpdateStorageType = RouterInputs['storage']['update']
 type DeleteStorageType = RouterInputs['storage']['delete']
@@ -65,6 +66,15 @@ function LocationTable() {
                 </TableCell>
               </TableRow>
             ))}
+            {locations.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <Banner type="warning" heading="There are no storage locations">
+                    You need to create a Storage Location first!
+                  </Banner>
+                </TableCell>
+              </TableRow>
+            )}
           </Suspense>
         </TableBody>
       </Table>
