@@ -13,9 +13,6 @@ interface SearchResultProps {
 }
 
 export default function SearchResults({ results }: SearchResultProps) {
-  console.log('RESULTS HERE')
-  console.log(results)
-
   function RenderInventory({ cards }: { cards: typeof results.inventory }) {
     const ids = cards.map((card) => card.scryfallId)
     const inventory = ids.map((id) => trpc.search.getCard.useQuery(id).data)
